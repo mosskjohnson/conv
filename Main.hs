@@ -30,6 +30,11 @@ data UnitType
     | Week
     | Month
     | Year
+
+    | Kilogram
+    | Gram
+    | Ounce
+    | Pound
     deriving (Eq, Enum, Show)
 
 unitStrReprs :: [(UnitType, [String])]
@@ -52,28 +57,36 @@ unitStrReprs =
     , (Week, ["week", "wk"])
     , (Month, ["month", "mo"])
     , (Year, ["year", "yr"])
+    , (Kilogram, ["kilogram", "kilo", "kg"])
+    , (Gram, ["gram", "g"])
+    , (Ounce, ["ounce", "oz"])
+    , (Pound, ["pound", "lb"])
     ]
 
 unitConversionMap :: [(UnitType, UnitType, Transformation)]
 unitConversionMap = 
-    [ (Celcius,      Celcius, [])
-    , (Fahrenheit,   Celcius, [Sub 32, Div 1.8])
-    , (Kelvin,       Celcius, [Sub 273.15])
-    , (Meter,        Meter,   [])
-    , (Mile,         Meter,   [Mult 1600.9344])
-    , (Centimeter,   Meter,   [Div 100])
-    , (Kilometer,    Meter,   [Mult 1000])
-    , (Inch,         Meter,   [Div 39.3700787402])
-    , (Foot,         Meter,   [Div 3.28084])
-    , (Yard,         Meter,   [Div 1.093613])
-    , (NauticalMile, Meter,   [Mult 1852])
-    , (Second,       Second,  [])
-    , (Minute,       Second,  [Mult 60])
-    , (Hour,         Second,  [Mult 3600])
-    , (Day,          Second,  [Mult 86400])
-    , (Week,         Second,  [Mult 604800])
-    , (Month,        Second,  [Mult 2629800])
-    , (Year,         Second,  [Mult 31557600])
+    [ (Celcius,      Celcius,  [])
+    , (Fahrenheit,   Celcius,  [Sub 32, Div 1.8])
+    , (Kelvin,       Celcius,  [Sub 273.15])
+    , (Meter,        Meter,    [])
+    , (Mile,         Meter,    [Mult 1600.9344])
+    , (Centimeter,   Meter,    [Div 100])
+    , (Kilometer,    Meter,    [Mult 1000])
+    , (Inch,         Meter,    [Div 39.3700787402])
+    , (Foot,         Meter,    [Div 3.28084])
+    , (Yard,         Meter,    [Div 1.093613])
+    , (NauticalMile, Meter,    [Mult 1852])
+    , (Second,       Second,   [])
+    , (Minute,       Second,   [Mult 60])
+    , (Hour,         Second,   [Mult 3600])
+    , (Day,          Second,   [Mult 86400])
+    , (Week,         Second,   [Mult 604800])
+    , (Month,        Second,   [Mult 2629800])
+    , (Year,         Second,   [Mult 31557600])
+    , (Kilogram,     Kilogram, [])
+    , (Gram,         Kilogram, [Div 1000])
+    , (Ounce,        Kilogram, [Div 35.27396])
+    , (Pound,        Kilogram, [Div 2.204623])
     ]
 
 applyTransformation :: Transformation -> Double -> Double
