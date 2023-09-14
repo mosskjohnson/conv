@@ -5,6 +5,10 @@ import Text.Read (readMaybe)
 
 type Exception = String
 
+type Transformation = [Operation]
+
+data Operation = Add Double | Sub Double | Mult Double | Div Double
+
 data UnitType 
     = Fahrenheit 
     | Celcius
@@ -28,65 +32,13 @@ data UnitType
     | Year
     deriving (Eq, Enum, Show)
 
-type Transformation = [Operation]
-
-data Operation = Add Double | Sub Double | Mult Double | Div Double
-
-id_to_id :: Transformation
-id_to_id = []
-
-f_to_c :: Transformation
-f_to_c = [Sub 32, Div 1.8]
-
-k_to_c :: Transformation
-k_to_c = [Sub 273.15]
-
-mi_to_m :: Transformation
-mi_to_m = [Mult 1600.9344]
-
-cm_to_m :: Transformation
-cm_to_m = [Div 100]
-
-km_to_m :: Transformation
-km_to_m = [Mult 1000]
-
-in_to_m :: Transformation
-in_to_m = [Div 39.3700787402]
-
-ft_to_m :: Transformation
-ft_to_m = [Div 3.28084]
-
-yd_to_m :: Transformation
-yd_to_m = [Div 1.093613]
-
-nm_to_m :: Transformation
-nm_to_m = [Mult 1852]
-
-min_to_s :: Transformation
-min_to_s = [Mult 60]
-
-hr_to_s :: Transformation
-hr_to_s = [Mult 3600]
-
-day_to_s :: Transformation
-day_to_s = [Mult 86400]
-
-wk_to_s :: Transformation
-wk_to_s = [Mult 604800]
-
-mo_to_s :: Transformation
-mo_to_s = [Mult 2629800]
-
-yr_to_s :: Transformation
-yr_to_s = [Mult 31557600]
-
 unitStrReprs :: [(UnitType, [String])]
 unitStrReprs = 
     [ (Fahrenheit, ["fahrenheit", "f"])
     , (Celcius, ["celcius", "c"])
     , (Kelvin, ["kelvin", "k"])
     , (Mile, ["mile", "mi"])
-    , (Meter, ["meter", "m"])
+    , (Meter, ["meter", "metre", "m"])
     , (Centimeter, ["centimeter", "cm"])
     , (Kilometer, ["kilometer", "km"])
     , (Inch, ["inch", "in"])
@@ -104,43 +56,43 @@ unitStrReprs =
 
 unitConversionMap :: [(UnitType, UnitType, Transformation)]
 unitConversionMap = 
-    [ (Celcius, Celcius, id_to_id)
-    , (Fahrenheit, Celcius, f_to_c)
-    , (Kelvin, Celcius, k_to_c)
-    , (Meter, Meter, id_to_id)
-    , (Mile, Meter, mi_to_m)
-    , (Centimeter, Meter, cm_to_m)
-    , (Kilometer, Meter, km_to_m)
-    , (Inch, Meter, in_to_m)
-    , (Foot, Meter, ft_to_m)
-    , (Yard, Meter, yd_to_m)
-    , (NauticalMile, Meter, nm_to_m)
-    , (Second, Second, id_to_id)
-    , (Minute, Second, min_to_s)
-    , (Hour, Second, hr_to_s)
-    , (Day, Second, day_to_s)
-    , (Week, Second, wk_to_s)
-    , (Month, Second, mo_to_s)
-    , (Year, Second, yr_to_s)
+    [ (Celcius,      Celcius, [])
+    , (Fahrenheit,   Celcius, [Sub 32, Div 1.8])
+    , (Kelvin,       Celcius, [Sub 273.15])
+    , (Meter,        Meter,   [])
+    , (Mile,         Meter,   [Mult 1600.9344])
+    , (Centimeter,   Meter,   [Div 100])
+    , (Kilometer,    Meter,   [Mult 1000])
+    , (Inch,         Meter,   [Div 39.3700787402])
+    , (Foot,         Meter,   [Div 3.28084])
+    , (Yard,         Meter,   [Div 1.093613])
+    , (NauticalMile, Meter,   [Mult 1852])
+    , (Second,       Second,  [])
+    , (Minute,       Second,  [Mult 60])
+    , (Hour,         Second,  [Mult 3600])
+    , (Day,          Second,  [Mult 86400])
+    , (Week,         Second,  [Mult 604800])
+    , (Month,        Second,  [Mult 2629800])
+    , (Year,         Second,  [Mult 31557600])
     ]
 
 applyTransformation :: Transformation -> Double -> Double
 applyTransformation ops d = foldl (flip applyOperation) d ops
 
 applyOperation :: Operation -> Double -> Double
-applyOperation (Add a) d = d + a
-applyOperation (Sub a) d = d - a
+applyOperation (Add a) d  = d + a
+applyOperation (Sub a) d  = d - a
 applyOperation (Mult a) d = d * a
-applyOperation (Div a) d = d / a
+applyOperation (Div a) d  = d / a
 
 invertTransformation :: Transformation -> Transformation
 invertTransformation t = map invertOperation (reverse t)
 
 invertOperation :: Operation -> Operation
-invertOperation (Add a) = Sub a
-invertOperation (Sub a) = Add a
+invertOperation (Add a)  = Sub a
+invertOperation (Sub a)  = Add a
 invertOperation (Mult a) = Div a
-invertOperation (Div a) = Mult a
+invertOperation (Div a)  = Mult a
 
 findFirst :: (a -> Bool) -> [a] -> Maybe a
 findFirst _ [] = Nothing
@@ -179,7 +131,7 @@ printVersion :: IO ()
 printVersion = putStrLn "1.0"
 
 printUnits :: IO ()
-printUnits = putStrLn $ "-- Units --\n" ++ intercalate "\n" [show ut ++ ": " ++ show strings | s@(ut, strings) <- unitStrReprs]
+printUnits = putStrLn $ "-- Units --\n" ++ intercalate "\n" [show ut ++ ": " ++ show strings | (ut, strings) <- unitStrReprs]
 
 main = do
     args <- System.Environment.getArgs
