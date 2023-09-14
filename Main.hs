@@ -5,50 +5,123 @@ import Text.Read (readMaybe)
 
 type Exception = String
 
-data UnitType = Fahrenheit | Celcius | Mile | Meter | Centimeter | Inch | NauticalMile deriving (Eq, Show)
+data UnitType 
+    = Fahrenheit 
+    | Celcius
+    | Kelvin
+    
+    | Mile
+    | Meter
+    | Centimeter
+    | Kilometer
+    | Inch
+    | Foot
+    | Yard
+    | NauticalMile
+    
+    | Second
+    | Minute
+    | Hour
+    | Day
+    | Week
+    | Month
+    | Year
+    deriving (Eq, Enum, Show)
 
 type Transformation = [Operation]
 
 data Operation = Add Double | Sub Double | Mult Double | Div Double
 
-unitStrReprs :: [(UnitType, [String])]
-unitStrReprs = 
-    [ (Fahrenheit, ["fahrenheit", "f"])
-    , (Celcius, ["celcius", "c"])
-    , (Mile, ["mile", "mi"])
-    , (Meter, ["meter", "m"])
-    , (Centimeter, ["centimeter", "cm"])
-    , (Inch, ["inch", "in"])
-    , (NauticalMile, ["nauticalmile", "nm", "nmi"])
-    ]
+id_to_id :: Transformation
+id_to_id = []
 
 f_to_c :: Transformation
 f_to_c = [Sub 32, Div 1.8]
 
-mile_to_m :: Transformation
-mile_to_m = [Mult 1600.9344]
+k_to_c :: Transformation
+k_to_c = [Sub 273.15]
+
+mi_to_m :: Transformation
+mi_to_m = [Mult 1600.9344]
 
 cm_to_m :: Transformation
 cm_to_m = [Div 100]
 
+km_to_m :: Transformation
+km_to_m = [Mult 1000]
+
 in_to_m :: Transformation
 in_to_m = [Div 39.3700787402]
 
-nmile_to_m :: Transformation
-nmile_to_m = [Mult 1852]
+ft_to_m :: Transformation
+ft_to_m = [Div 3.28084]
 
-id_to_id :: Transformation
-id_to_id = []
+yd_to_m :: Transformation
+yd_to_m = [Div 1.093613]
+
+nm_to_m :: Transformation
+nm_to_m = [Mult 1852]
+
+min_to_s :: Transformation
+min_to_s = [Mult 60]
+
+hr_to_s :: Transformation
+hr_to_s = [Mult 3600]
+
+day_to_s :: Transformation
+day_to_s = [Mult 86400]
+
+wk_to_s :: Transformation
+wk_to_s = [Mult 604800]
+
+mo_to_s :: Transformation
+mo_to_s = [Mult 2629800]
+
+yr_to_s :: Transformation
+yr_to_s = [Mult 31557600]
+
+unitStrReprs :: [(UnitType, [String])]
+unitStrReprs = 
+    [ (Fahrenheit, ["fahrenheit", "f"])
+    , (Celcius, ["celcius", "c"])
+    , (Kelvin, ["kelvin", "k"])
+    , (Mile, ["mile", "mi"])
+    , (Meter, ["meter", "m"])
+    , (Centimeter, ["centimeter", "cm"])
+    , (Kilometer, ["kilometer", "km"])
+    , (Inch, ["inch", "in"])
+    , (Foot, ["foot", "feet", "ft"])
+    , (Yard, ["yard", "yd"])
+    , (NauticalMile, ["nauticalmile", "nm", "nmi"])
+    , (Second, ["second", "s"])
+    , (Minute, ["minute", "min"])
+    , (Hour, ["hour", "hr"])
+    , (Day, ["day"])
+    , (Week, ["week", "wk"])
+    , (Month, ["month", "mo"])
+    , (Year, ["year", "yr"])
+    ]
 
 unitConversionMap :: [(UnitType, UnitType, Transformation)]
 unitConversionMap = 
     [ (Celcius, Celcius, id_to_id)
     , (Fahrenheit, Celcius, f_to_c)
+    , (Kelvin, Celcius, k_to_c)
     , (Meter, Meter, id_to_id)
-    , (Mile, Meter, mile_to_m)
+    , (Mile, Meter, mi_to_m)
     , (Centimeter, Meter, cm_to_m)
+    , (Kilometer, Meter, km_to_m)
     , (Inch, Meter, in_to_m)
-    , (NauticalMile, Meter, nmile_to_m)
+    , (Foot, Meter, ft_to_m)
+    , (Yard, Meter, yd_to_m)
+    , (NauticalMile, Meter, nm_to_m)
+    , (Second, Second, id_to_id)
+    , (Minute, Second, min_to_s)
+    , (Hour, Second, hr_to_s)
+    , (Day, Second, day_to_s)
+    , (Week, Second, wk_to_s)
+    , (Month, Second, mo_to_s)
+    , (Year, Second, yr_to_s)
     ]
 
 applyTransformation :: Transformation -> Double -> Double
@@ -137,4 +210,4 @@ main = do
                                         Just (utt, _) ->
                                             case findConversionAndApply d utf utt of
                                                 Left e -> putStrLn e
-                                                Right dNew -> putStrLn $ show d ++ " " ++ show utf ++ " equals " ++ show dNew ++ " " ++ show utt
+                                                Right dNew -> putStrLn $ show d ++ " " ++ show utf ++ " = " ++ show dNew ++ " " ++ show utt
