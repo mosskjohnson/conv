@@ -13,6 +13,7 @@ data UnitType
     = Fahrenheit 
     | Celcius
     | Kelvin
+    | Rankine
     
     | Mile
     | Meter
@@ -23,6 +24,9 @@ data UnitType
     | Yard
     | Fathom
     | NauticalMile
+    | AstronomicalUnit
+    | Micrometer
+    | Nanometer
     
     | Second
     | Minute
@@ -31,84 +35,166 @@ data UnitType
     | Week
     | Month
     | Year
+    | Decade
+    | Century
+    | Millennium
+    | Millisecond
+    | Microsecond
+    | Nanosecond
+    | Fortnight
 
     | Kilogram
+    | AtomicMassUnit
     | Gram
+    | Milligram
     | Ounce
     | Pound
+    | Stone
+    | MetricTon
 
     | Liter
+    | Milliliter
     | FluidOunce
     | Cup
     | Pint
     | Quart
     | Gallon
+
+    | Radian
+    | Degree
+    | Gradian
+    | Revolution
+    | ArcMinute
+    | ArcSecond
+
+    | MeterPerSecond
+    | MilePerHour
+    | FootPerSecond
+    | KilometerPerHour
+    | Knot
+    | Mach
     deriving (Eq, Enum, Show)
 
 unitStrReprs :: [(UnitType, [String])]
 unitStrReprs = 
-    [ (Fahrenheit,   ["fahrenheit", "f"])
-    , (Celcius,      ["celcius", "c"])
-    , (Kelvin,       ["kelvin", "k"])
-    , (Mile,         ["mile", "mi"])
-    , (Meter,        ["meter", "metre", "m"])
-    , (Centimeter,   ["centimeter", "cm"])
-    , (Kilometer,    ["kilometer", "km"])
-    , (Inch,         ["inch", "in"])
-    , (Foot,         ["foot", "feet", "ft"])
-    , (Yard,         ["yard", "yd"])
-    , (Fathom,       ["fathom"])
-    , (NauticalMile, ["nauticalmile", "nm", "nmi"])
-    , (Second,       ["second", "s"])
-    , (Minute,       ["minute", "min"])
-    , (Hour,         ["hour", "hr"])
-    , (Day,          ["day"])
-    , (Week,         ["week", "wk"])
-    , (Month,        ["month", "mo"])
-    , (Year,         ["year", "yr"])
-    , (Kilogram,     ["kilogram", "kilo", "kg"])
-    , (Gram,         ["gram", "g"])
-    , (Ounce,        ["ounce", "oz"])
-    , (Pound,        ["pound", "lb"])
-    , (Liter,        ["liter", "litre", "l"])
-    , (FluidOunce,   ["fluidounce", "floz"])
-    , (Cup,          ["cup"])
-    , (Pint,         ["pint"])
-    , (Quart,        ["quart"])
-    , (Gallon,       ["gallon", "gal", "gl"])
+    [ (Fahrenheit,       ["fahrenheit", "f"])
+    , (Celcius,          ["celcius", "c"])
+    , (Kelvin,           ["kelvin", "k"])
+    , (Rankine,          ["rankine", "ra"])
+    , (Mile,             ["mile", "mi"])
+    , (Meter,            ["meter", "metre", "m"])
+    , (Centimeter,       ["centimeter", "cm"])
+    , (Kilometer,        ["kilometer", "km"])
+    , (Inch,             ["inch", "in"])
+    , (Foot,             ["foot", "feet", "ft"])
+    , (Yard,             ["yard", "yd"])
+    , (Fathom,           ["fathom"])
+    , (NauticalMile,     ["nauticalmile", "nmi"])
+    , (AstronomicalUnit, ["astronomicalunit", "au", "ua"])
+    , (Micrometer,       ["micrometer", "micrometre", "micron"])
+    , (Nanometer,        ["nanometer", "nanometre", "nm"])
+    , (Second,           ["second", "s", "sec"])
+    , (Minute,           ["minute", "min"])
+    , (Hour,             ["hour", "hr"])
+    , (Day,              ["day"])
+    , (Week,             ["week", "wk"])
+    , (Month,            ["month", "mo"])
+    , (Year,             ["year", "yr"])
+    , (Decade,           ["decade"])
+    , (Century,          ["century"])
+    , (Millennium,       ["millennium"])
+    , (Millisecond,      ["millisecond", "ms"])
+    , (Microsecond,      ["microsecond"])
+    , (Nanosecond,       ["nanosecond", "ns"])
+    , (Fortnight,        ["fortnight"])
+    , (Kilogram,         ["kilogram", "kilo", "kg"])
+    , (AtomicMassUnit,   ["atomicmassunit", "amu"])
+    , (Gram,             ["gram", "g"])
+    , (Milligram,        ["milligram", "mg"])
+    , (Ounce,            ["ounce", "oz"])
+    , (Pound,            ["pound", "lb"])
+    , (Stone,            ["stone", "st"])
+    , (MetricTon,        ["metricton"])
+    , (Liter,            ["liter", "litre", "l"])
+    , (Milliliter,       ["milliliter", "millilitre", "ml"])
+    , (FluidOunce,       ["fluidounce", "floz"])
+    , (Cup,              ["cup"])
+    , (Pint,             ["pint"])
+    , (Quart,            ["quart"])
+    , (Gallon,           ["gallon", "gal", "gl"])
+    , (Radian,           ["radian", "rad"])
+    , (Degree,           ["degree", "deg"])
+    , (Gradian,          ["gradian", "grad"])
+    , (Revolution,       ["revolution", "rev"])
+    , (ArcMinute,        ["arcminute", "amin"])
+    , (ArcSecond,        ["arcsecond", "asec"])
+    , (MeterPerSecond,   ["meterpersecond", "m/s"])
+    , (MilePerHour,      ["mileperhour", "mph", "m/h"])
+    , (FootPerSecond,    ["footpersecond", "fps", "ft/s"])
+    , (KilometerPerHour, ["kilometerperhour", "kph", "km/h"])
+    , (Knot,             ["knot"])
+    , (Mach,             ["mach"])
     ]
 
 unitConversionMap :: [(UnitType, UnitType, Transformation)]
 unitConversionMap = 
-    [ (Celcius,      Celcius,  [])
-    , (Fahrenheit,   Celcius,  [Sub 32, Div 1.8])
-    , (Kelvin,       Celcius,  [Sub 273.15])
-    , (Meter,        Meter,    [])
-    , (Mile,         Meter,    [Mul 1600.9344])
-    , (Centimeter,   Meter,    [Div 100])
-    , (Kilometer,    Meter,    [Mul 1000])
-    , (Inch,         Meter,    [Div 39.3700787402])
-    , (Foot,         Meter,    [Div 3.28084])
-    , (Yard,         Meter,    [Div 1.093613])
-    , (Fathom,       Meter,    [Mul 1.8288])
-    , (NauticalMile, Meter,    [Mul 1852])
-    , (Second,       Second,   [])
-    , (Minute,       Second,   [Mul 60])
-    , (Hour,         Second,   [Mul 3600])
-    , (Day,          Second,   [Mul 86400])
-    , (Week,         Second,   [Mul 604800])
-    , (Month,        Second,   [Mul 2629800])
-    , (Year,         Second,   [Mul 31557600])
-    , (Kilogram,     Kilogram, [])
-    , (Gram,         Kilogram, [Div 1000])
-    , (Ounce,        Kilogram, [Div 35.27396])
-    , (Pound,        Kilogram, [Div 2.204623])
-    , (Liter,        Liter,    [])
-    , (FluidOunce,   Liter,    [Div 33.81413])
-    , (Cup,          Liter,    [Div 4.226766])
-    , (Pint,         Liter,    [Div 2.113376])
-    , (Quart,        Liter,    [Div 1.056688])
-    , (Gallon,       Liter,    [Mul 3.7854])
+    [ (Celcius,          Celcius,        [])
+    , (Fahrenheit,       Celcius,        [Sub 32, Div 1.8])
+    , (Kelvin,           Celcius,        [Sub 273.15])
+    , (Rankine,          Celcius,        [Div 1.8, Sub 273.15])
+    , (Meter,            Meter,          [])
+    , (Mile,             Meter,          [Mul 1609.344])
+    , (Centimeter,       Meter,          [Div 100])
+    , (Kilometer,        Meter,          [Mul 1000])
+    , (Inch,             Meter,          [Div 39.3700787402])
+    , (Foot,             Meter,          [Div 3.28084])
+    , (Yard,             Meter,          [Div 1.093613])
+    , (Fathom,           Meter,          [Mul 1.8288])
+    , (NauticalMile,     Meter,          [Mul 1852])
+    , (AstronomicalUnit, Meter,          [Mul 149597870691])
+    , (Micrometer,       Meter,          [Div 1000000])
+    , (Nanometer,        Meter,          [Div 1000000000])
+    , (Second,           Second,         [])
+    , (Minute,           Second,         [Mul 60])
+    , (Hour,             Second,         [Mul 3600])
+    , (Day,              Second,         [Mul 86400])
+    , (Week,             Second,         [Mul 604800])
+    , (Month,            Second,         [Mul 2629800])
+    , (Year,             Second,         [Mul 31557600])
+    , (Decade,           Second,         [Mul 315576000])
+    , (Century,          Second,         [Mul 3155760000])
+    , (Millennium,       Second,         [Mul 31557600000])
+    , (Millisecond,      Second,         [Div 1000])
+    , (Microsecond,      Second,         [Div 1000000])
+    , (Nanosecond,       Second,         [Div 1000000000])
+    , (Fortnight,        Second,         [Mul 1209600])
+    , (Kilogram,         Kilogram,       [])
+    , (AtomicMassUnit,   Kilogram,       [Div 602214129011673940000000000])
+    , (Gram,             Kilogram,       [Div 1000])
+    , (Milligram,        Kilogram,       [Div 1000000])
+    , (Ounce,            Kilogram,       [Div 35.27396])
+    , (Pound,            Kilogram,       [Div 2.204623])
+    , (Stone,            Kilogram,       [Mul 6.35029])
+    , (MetricTon,        Kilogram,       [Mul 1000])
+    , (Liter,            Liter,          [])
+    , (Milliliter,       Liter,          [Div 1000])
+    , (FluidOunce,       Liter,          [Div 33.81413])
+    , (Cup,              Liter,          [Div 4.226766])
+    , (Pint,             Liter,          [Div 2.113376])
+    , (Quart,            Liter,          [Div 1.056688])
+    , (Gallon,           Liter,          [Mul 3.7854])
+    , (Radian,           Radian,         [])
+    , (Degree,           Radian,         [Div 57.2957795130823208768])
+    , (Gradian,          Radian,         [Div 63.66197723675813430755])
+    , (Revolution,       Radian,         [Mul 6.28318530717958647693])
+    , (ArcMinute,        Radian,         [Div 3437.74677078493925260789])
+    , (ArcSecond,        Radian,         [Div 206264.80624709635515647336])
+    , (MeterPerSecond,   MeterPerSecond, [])
+    , (MilePerHour,      MeterPerSecond, [Div 2.23693629205440229062])
+    , (FootPerSecond,    MeterPerSecond, [Div 3.28084])
+    , (KilometerPerHour, MeterPerSecond, [Div 3.6])
+    , (Knot,             MeterPerSecond, [Div 1.943844])
+    , (Mach,             MeterPerSecond, [Mul 343])
     ]
 
 applyTransformation :: Transformation -> Double -> Double
