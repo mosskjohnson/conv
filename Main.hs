@@ -127,6 +127,21 @@ data UnitType
     | Rood
     | SqRod
     | Are
+
+    | Pascal
+    | Atmosphere
+    | Torr
+    | MMHG
+    | Bar
+    | Kilobar
+    | PSI
+    | Kilopascal
+
+    | Watt
+    | Kilowatt
+    | Megawatt
+    | Gigawatt
+    | Horsepower
     deriving (Eq, Enum, Show)
 
 unitStrReprs :: [(UnitType, [String])]
@@ -238,6 +253,19 @@ unitStrReprs =
     , (Rood,               ["rood"])
     , (SqRod,              ["squarerod", "sqrod"])
     , (Are,                ["are"])
+    , (Pascal,             ["pascal", "pa"])
+    , (Atmosphere,         ["atmosphere", "atm"])
+    , (Torr,               ["torr"])
+    , (MMHG,               ["mmhg"])
+    , (Bar,                ["bar"])
+    , (Kilobar,            ["kilobar"])
+    , (PSI,                ["psi"])
+    , (Kilopascal,         ["kilopascal", "kpa"])
+    , (Watt,               ["watt", "w"])
+    , (Kilowatt,           ["kilowatt", "kw"])
+    , (Megawatt,           ["megawatt", "mw"])
+    , (Gigawatt,           ["gigawatt", "gw"])
+    , (Horsepower,         ["horsepower", "hp"])
     ]
 
 unitConversionMap :: [(UnitType, UnitType, Transformation)]
@@ -349,6 +377,19 @@ unitConversionMap =
     , (Rood,               SqMeter,        [Mul 1011.714])
     , (SqRod,              SqMeter,        [Mul 25.2929])
     , (Are,                SqMeter,        [Mul 100])
+    , (Pascal,             Pascal,         [])
+    , (Atmosphere,         Pascal,         [Mul 101325])
+    , (Torr,               Pascal,         [Mul 133.322])
+    , (MMHG,               Pascal,         [Mul 133.322])
+    , (Bar,                Pascal,         [Mul 100000])
+    , (Kilobar,            Pascal,         [Mul 100000000])
+    , (PSI,                Pascal,         [Mul 6894.757])
+    , (Kilopascal,         Pascal,         [Mul 1000])
+    , (Watt,               Watt,           [])
+    , (Kilowatt,           Watt,           [Mul 1000])
+    , (Megawatt,           Watt,           [Mul 1000000])
+    , (Gigawatt,           Watt,           [Mul 1000000000])
+    , (Horsepower,         Watt,           [Mul 745.699872])
     ]
 
 applyTransformation :: Transformation -> Double -> Double
