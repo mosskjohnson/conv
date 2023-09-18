@@ -447,7 +447,7 @@ printVersion :: IO ()
 printVersion = putStrLn "conv -- Version 1.0\nCreated by Moss Johnson"
 
 printUnits :: IO ()
-printUnits = putStrLn $ "-- Units --\n" ++ intercalate "\n" [show ut ++ ": " ++ show strings | (ut, strings) <- unitStrReprs]
+printUnits = putStrLn $ "-- Units --\n\t" ++ intercalate "\n\t" [show ut ++ ": " ++ show strings | (ut, strings) <- unitStrReprs]
 
 main = do
     args <- System.Environment.getArgs
