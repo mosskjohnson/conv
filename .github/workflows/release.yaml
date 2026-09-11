@@ -29,8 +29,7 @@ jobs:
 
       - uses: haskell-actions/setup@v2
         with:
-          ghc-version: '9.2.8'
-          cabal-version: 'none'
+          ghc-version: '9.6.6'
 
       - name: Build
         run: ghc -O2 --make Main.hs -o conv
