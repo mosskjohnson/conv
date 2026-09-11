@@ -1,8 +1,15 @@
 # conv
-Simple command line tool for conversions between units.
+Command line tool for conversions between units, written in a single file of Haskell
 
 ### Usage
 `conv <number> <fromUnit> <toUnit>`
+
+### Setting it up
+
+Note: currently only linux release is available. You can use GHC to build it for other OS
+
+- Download the executable from the releases tab
+- Move it to `/usr/local/bin/` or otherwise add it to your PATH
 
 ### Supported Units
 | Unit | Commands |
@@ -127,5 +134,6 @@ Simple command line tool for conversions between units.
 | Megawatt           |  ["megawatt", "mw"] |
 | Gigawatt           |  ["gigawatt", "gw"] |
 | Horsepower         |  ["horsepower", "hp"] |
+
 ### Help
 `conv --help`
