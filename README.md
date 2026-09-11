@@ -6,10 +6,8 @@ Command line tool for conversions between units, written in a single file of Has
 
 ### Setting it up
 
-Note: currently only linux release is available. You can use GHC to build it for other OS
-
 - Download the executable from the releases tab
-- Move it to `/usr/local/bin/` or otherwise add it to your PATH
+- Add it to your PATH
 
 ### Supported Units
 | Unit | Commands |
