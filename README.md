@@ -1,5 +1,5 @@
 # conv
-Command line tool for conversions between units, written in a single file of Haskell
+Command line tool for conversions between units, written in Haskell
 
 ### Usage
 `conv <number> <fromUnit> <toUnit>`
